@@ -31,5 +31,22 @@ const cartSlice = createSlice({
     }
 });
 
+const sendCartData = (cart) => {
+    return async (dispatch) => {
+        dispatch(UIActions.showNotification({
+            status: 'pending',
+            title: 'sending...',
+            message: 'Sending Cart Data...'
+          }))
+          const response = await fetch('https://react-posting-default-rtdb.firebaseio.com/cart.json', { 
+            method: 'PUT', 
+            body: JSON.stringify(cart) 
+          })
+          if (!response.ok) {
+           throw new Error ('Data Not Sent Successfully...')
+          };
+    };
+}
+
 export const cartActions = cartSlice.actions;
 export default cartSlice;
