@@ -9,11 +9,14 @@ export const fetchCartData = () => {
                 throw new Error ('Could Not Fetch Cart Data')
             }
             const responseData = await response.json();
-            return responseData
+            return responseData;
         };
         try {
             const cartData = await fetchData();
-            dispatch(cartActions.replaceCart(cartData));
+            dispatch(cartActions.replaceCart({
+                items: cartData.items || [],
+                totalQuantity: cartData.totalQuantity
+            }));
         } catch (error) {
             dispatch(
                 UIActions.showNotification({
@@ -42,7 +45,10 @@ export const sendCartData = (cart) => {
           'https://react-posting-default-rtdb.firebaseio.com//cart.json',
           {
             method: 'PUT',
-            body: JSON.stringify(cart),
+            body: JSON.stringify({
+                items: cart.items,
+                totalQuantity: cart.totalQuantity,
+            }),
           }
         );
   

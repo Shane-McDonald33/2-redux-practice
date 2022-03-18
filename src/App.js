@@ -5,6 +5,7 @@ import Notification from './Components/UI/Notification';
 import { useSelector, useDispatch } from 'react-redux';
 import { Fragment, useEffect } from 'react';
 import { sendCartData, fetchCartData } from './Store/cart-actions';
+
 let isInitial = true;
 
 function App() {
@@ -21,9 +22,12 @@ function App() {
     if (isInitial) {
       isInitial = false;
       return;
+    };
+
+    if (cart.changed) {
+      dispatch(sendCartData(cart));
     }
 
-    dispatch(sendCartData(cart));
   }, [cart, dispatch]);
   
   return (
