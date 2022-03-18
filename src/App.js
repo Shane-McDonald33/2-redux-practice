@@ -4,8 +4,7 @@ import Products from './Components/Shop/Products';
 import Notification from './Components/UI/Notification';
 import { useSelector, useDispatch } from 'react-redux';
 import { Fragment, useEffect } from 'react';
-import { UIActions } from './Store/ui-slice';
-
+import { sendCartData } from './Store/cart-slice';
 let isInitial = true;
 
 function App() {
@@ -15,25 +14,12 @@ function App() {
   const notification = useSelector((state) => state.ui.notification);
 
   useEffect(() => {
-    const sendCartData = async () => {
-      dispatch(UIActions.showNotification({
-        status: 'success',
-        title: 'Success.',
-        message: 'Data Sent Successfully...',
-      }));
-    };
-
     if (isInitial) {
       isInitial = false;
-      return
+      return;
     }
-    sendCartData().catch(error => {
-      dispatch(UIActions.showNotification({
-        status: 'Error',
-        title: 'Error...',
-        message: 'Sending Cart Data Failed...'
-      }))
-    })
+
+    dispatch(sendCartData(cart));
   }, [cart, dispatch]);
   
   return (
